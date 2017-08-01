@@ -46,6 +46,13 @@ public class PersonRepositoryImpl implements PersonRepository {
         jdbcTemplate.update(DELETE_SQL, id);
     }
 
+    @Override
+    public void delete(List<Integer> ids) {
+        for (int id : ids) {
+            delete(id);
+        }
+    }
+
 
     // Map a row of the result set to a person object
     private static class PersonMapper implements RowMapper<Person> {

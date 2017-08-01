@@ -10,4 +10,6 @@ public interface PersonRepository {
     List<Person> get();
     void update(Person person);
     void delete(int id);
+    void delete(List<Integer> ids);
+
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -79,6 +80,38 @@ public class PersonRepositoryTest {
         Person person3 = findInList(people, person1.getFirstName(), person1.getLastName());
         Assert.assertNull(person3);
     }
+
+    @Test
+    public void testDeleteMuliple() {
+        Person person1A = createTestPerson();
+        personRepository.add(person1A);
+
+        Person person1B = createTestPerson();
+        personRepository.add(person1B);
+
+        List<Person> people = personRepository.get();
+
+        // Find person 1A so we have their id
+        Person person2A = findInList(people, person1A.getFirstName(), person1A.getLastName());
+        Assert.assertNotNull(person2A);
+
+        // Find person 1B so we have their id
+        Person person2B = findInList(people, person1B.getFirstName(), person1B.getLastName());
+        Assert.assertNotNull(person2B);
+
+        List<Integer> ids = new ArrayList<>();
+        ids.add(person2A.getId());
+        ids.add(person2B.getId());
+        personRepository.delete(ids);
+
+        people = personRepository.get();
+        Person person3A = findInList(people, person1A.getFirstName(), person1A.getLastName());
+        Assert.assertNull(person3A);
+
+        Person person3B = findInList(people, person1B.getFirstName(), person1B.getLastName());
+        Assert.assertNull(person3B);
+    }
+
 
     private Person createTestPerson() {
         // Get unique names every time this test runs
