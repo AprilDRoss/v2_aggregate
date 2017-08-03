@@ -40,7 +40,7 @@ public class PesonServiceImpl implements PersonService {
 
     @Override
     public Person getById(int id) {
-        return personRepository.getById(id);
+        return getPerson(id);
     }
 
     @Override
@@ -95,6 +95,7 @@ public class PesonServiceImpl implements PersonService {
         person.setAddress(addressRepository.findByPersonId(person.getId()));
         person.getEmails().clear();
         person.getEmails().addAll(emailRepository.findByPersonId(id));
+        System.out.println("\n\n getPerson " + person);
         return person;
     }
 
