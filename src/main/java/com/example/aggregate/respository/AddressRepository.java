@@ -2,11 +2,7 @@ package com.example.aggregate.respository;
 
 
 import com.example.aggregate.domain.Address;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AddressRepository {
-    void add(Address address);
-    Address findByPersonId(int id);
-    void update(Address address);
-    void delete(int id);
-    void deleteByPersonId(int id);
+public interface AddressRepository extends JpaRepository<Address, Integer> {
 }

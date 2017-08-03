@@ -1,8 +1,18 @@
 package com.example.aggregate.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table( name = "person" )
 public class Person {
     private int id;
     private String firstName;
@@ -10,6 +20,8 @@ public class Person {
     private Address address;
     private List<Email> emails = new ArrayList<>();
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -34,6 +46,7 @@ public class Person {
         this.lastName = lastName;
     }
 
+    @OneToOne(mappedBy = "person")
     public Address getAddress() {
         return address;
     }
@@ -42,6 +55,7 @@ public class Person {
         this.address = address;
     }
 
+    @OneToMany(mappedBy = "person", fetch= FetchType.LAZY)
     public List<Email> getEmails() {
         return emails;
     }
@@ -59,17 +73,13 @@ public class Person {
 
         Person person = (Person) o;
 
-        if (firstName != null ? !firstName.equals(person.firstName) : person.firstName != null)
-            return false;
-        return lastName != null ? lastName.equals(person.lastName) : person.lastName == null;
+        return id == person.id;
 
     }
 
     @Override
     public int hashCode() {
-        int result = firstName != null ? firstName.hashCode() : 0;
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        return result;
+        return id;
     }
 
     @Override

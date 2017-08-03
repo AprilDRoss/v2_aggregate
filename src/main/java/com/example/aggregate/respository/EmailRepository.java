@@ -1,12 +1,7 @@
 package com.example.aggregate.respository;
 
 import com.example.aggregate.domain.Email;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface EmailRepository {
-    void add(Email email);
-    List<Email> findByPersonId(int id);
-    void delete(int id);
-    void deleteByPersonId(int id);
+public interface EmailRepository extends JpaRepository<Email, Integer> {
 }

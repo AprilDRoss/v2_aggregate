@@ -26,77 +26,96 @@ public class PesonServiceImpl implements PersonService {
 
     @Transactional
     @Override
-    public void add(Person person) {
-        personRepository.add(person);
+    public Person add(Person person) {
+        return personRepository.save(person);
     }
 
     @Transactional
     @Override
     public void add(List<Person> people) {
         for (Person person : people) {
-            personRepository.add(person);
+            personRepository.save(person);
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Person getById(int id) {
         return getPerson(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Person> get() {
-        return personRepository.get();
+        return personRepository.findAll();
     }
 
     @Transactional
     @Override
     public void update(Person person) {
-        personRepository.update(person);
+        personRepository.save(person);
     }
 
     @Transactional
     @Override
     public void delete(int id) {
+        Person person = this.getPerson(id);
+        emailRepository.delete(person.getEmails());
+        if (person.getAddress() != null) {
+            addressRepository.delete(person.getAddress());
+        }
         personRepository.delete(id);
     }
 
+    @Transactional
     @Override
     public Person addAddress(Address address) {
-        addressRepository.add(address);
-        return getPerson(address.getPersonId());
+        address = addressRepository.save(address);
+        Person person = personRepository.findOne(address.getPerson().getId());
+        person.setAddress(address);
+        personRepository.save(person);
+
+        return getPerson(address.getPerson().getId());
     }
 
-    @Override
-    public Person updateAddress(Address address) {
-        addressRepository.update(address);
-        return getPerson(address.getPersonId());
-    }
-
+    @Transactional
     @Override
     public Person deleteAddress(int personId, int addressId) {
         addressRepository.delete(addressId);
+        Person person = personRepository.findOne(personId);
+        person.setAddress(null);
+        personRepository.save(person);
+
         return getPerson(personId);
     }
 
+    @Transactional
     @Override
     public Person addEmail(Email email) {
-        emailRepository.add(email);
-        return getPerson(email.getPersonId());
+        emailRepository.save(email);
+        Person person = personRepository.findOne(email.getPerson().getId());
+        person.getEmails().add(email);
+        personRepository.save(person);
+
+        return getPerson(email.getPerson().getId());
     }
 
+    @Transactional
     @Override
     public Person deleteEmail(int personId, int emailId) {
+        Email email = emailRepository.findOne(emailId);
         emailRepository.delete(emailId);
+        Person person = personRepository.findOne(personId);
+        person.getEmails().remove(email);
+        personRepository.save(person);
+
         return getPerson(personId);
     }
 
     private Person getPerson(int id) {
-        Person person = personRepository.getById(id);
-        person.setAddress(addressRepository.findByPersonId(person.getId()));
-        person.getEmails().clear();
-        person.getEmails().addAll(emailRepository.findByPersonId(id));
-        System.out.println("\n\n getPerson " + person);
+        Person person = personRepository.findOne(id);
+        // For the lazy to load
+        person.getEmails().size();
         return person;
     }
-
 }

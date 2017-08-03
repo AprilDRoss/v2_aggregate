@@ -1,5 +1,15 @@
 package com.example.aggregate.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="address")
 public class Address {
 
     private int id;
@@ -7,8 +17,10 @@ public class Address {
     private String city;
     private String zip;
     private String state;
-    private int personId;
+    private Person person;
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -49,12 +61,14 @@ public class Address {
         this.state = state;
     }
 
-    public int getPersonId() {
-        return personId;
+    @OneToOne
+    @JoinColumn(name = "person_id")
+    public Person getPerson() {
+        return person;
     }
 
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     @Override
@@ -66,26 +80,13 @@ public class Address {
 
         Address address = (Address) o;
 
-        if (personId != address.personId)
-            return false;
-        if (street != null ? !street.equals(address.street) : address.street != null)
-            return false;
-        if (city != null ? !city.equals(address.city) : address.city != null)
-            return false;
-        if (zip != null ? !zip.equals(address.zip) : address.zip != null)
-            return false;
-        return state != null ? state.equals(address.state) : address.state == null;
+        return id == address.id;
 
     }
 
     @Override
     public int hashCode() {
-        int result = street != null ? street.hashCode() : 0;
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (zip != null ? zip.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + personId;
-        return result;
+        return id;
     }
 
     @Override
@@ -96,7 +97,7 @@ public class Address {
           ", city='" + city + '\'' +
           ", zip='" + zip + '\'' +
           ", state='" + state + '\'' +
-          ", personId=" + personId +
+          ", person=" + (person == null ? "" : person.getId()) +
           '}';
     }
 }

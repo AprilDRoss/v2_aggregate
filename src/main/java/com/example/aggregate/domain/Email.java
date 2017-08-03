@@ -1,27 +1,46 @@
 package com.example.aggregate.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="email")
 public class Email {
     private int id;
     private String email;
-    private int personId;
+    private Person person;
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
-    public int getPersonId() {
-        return personId;
+
+    @ManyToOne()
+    @JoinColumn(name = "person_id")
+    public Person getPerson() {
+        return person;
     }
-    public void setPersonId(int personId) {
-        this.personId = personId;
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     @Override
@@ -31,19 +50,15 @@ public class Email {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        Email email1 = (Email) o;
+        Email email = (Email) o;
 
-        if (personId != email1.personId)
-            return false;
-        return email != null ? email.equals(email1.email) : email1.email == null;
+        return id == email.id;
 
     }
 
     @Override
     public int hashCode() {
-        int result = email != null ? email.hashCode() : 0;
-        result = 31 * result + personId;
-        return result;
+        return id;
     }
 
     @Override
@@ -51,7 +66,7 @@ public class Email {
         return "Email{" +
           "id=" + id +
           ", email='" + email + '\'' +
-          ", personId=" + personId +
+          ", person=" + (person == null ? "" : person.getId()) +
           '}';
     }
 }
