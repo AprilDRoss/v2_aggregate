@@ -1,5 +1,7 @@
 package com.example.aggregate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,6 +35,7 @@ public class Email {
         this.email = email;
     }
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "person_id")
     public Person getPerson() {

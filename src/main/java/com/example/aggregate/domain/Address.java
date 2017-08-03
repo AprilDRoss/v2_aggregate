@@ -1,5 +1,7 @@
 package com.example.aggregate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -61,6 +63,7 @@ public class Address {
         this.state = state;
     }
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "person_id")
     public Person getPerson() {

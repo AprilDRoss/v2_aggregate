@@ -1,7 +1,5 @@
 package com.example.aggregate.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -56,7 +54,7 @@ public class Person {
         return address;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public void setAddress(Address address) {
         this.address = address;
     }
@@ -66,7 +64,7 @@ public class Person {
         return emails;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public void setEmails(List<Email> emails) {
         this.emails = emails;
     }
