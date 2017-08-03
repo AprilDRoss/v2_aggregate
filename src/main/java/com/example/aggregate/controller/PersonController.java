@@ -77,7 +77,8 @@ public class PersonController {
     public String addAddress(@PathVariable("id") Integer id,
                              @RequestBody String json) throws IOException {
         Address address = objectMapper.readValue(json, Address.class);
-        address.setPersonId(id);
+        Person person = personService.getById(id);
+        address.setPerson(person);
         personService.addAddress(address);
         return "ok";
     }
@@ -99,7 +100,8 @@ public class PersonController {
     public String addEmail(@PathVariable("id") Integer id,
                            @RequestBody String json) throws IOException {
         Email email = objectMapper.readValue(json, Email.class);
-        email.setPersonId(id);
+        Person person = personService.getById(id);
+        email.setPerson(person);
         personService.addEmail(email);
         return "ok";
     }

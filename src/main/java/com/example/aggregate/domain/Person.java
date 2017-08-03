@@ -1,5 +1,8 @@
 package com.example.aggregate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,7 +24,7 @@ public class Person {
     private List<Email> emails = new ArrayList<>();
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -30,6 +33,7 @@ public class Person {
         this.id = id;
     }
 
+    @Column(name = "firstname")
     public String getFirstName() {
         return firstName;
     }
@@ -38,6 +42,7 @@ public class Person {
         this.firstName = firstName;
     }
 
+    @Column(name = "lastname")
     public String getLastName() {
         return lastName;
     }
@@ -51,6 +56,7 @@ public class Person {
         return address;
     }
 
+    @JsonIgnore
     public void setAddress(Address address) {
         this.address = address;
     }
@@ -60,6 +66,7 @@ public class Person {
         return emails;
     }
 
+    @JsonIgnore
     public void setEmails(List<Email> emails) {
         this.emails = emails;
     }

@@ -68,16 +68,16 @@ public class PersonServiceTest {
 
         // Add an address
         Address address = PersonUtils.createRandomAddress();
-        address.setPersonId(person1.getId());
+        address.setPerson(person1);
         Person person3 = personService.addAddress(address);
         Assert.assertEquals(address, person3.getAddress());
 
         // Add email
         Email email1 = PersonUtils.createRandomEmail();
-        email1.setPersonId(person1.getId());
+        email1.setPerson(person1);
         personService.addEmail(email1);
         Email email2 = PersonUtils.createRandomEmail();
-        email2.setPersonId(person1.getId());
+        email2.setPerson(person1);
         Person person4 = personService.addEmail(email2);
 
         // Check that it is in the list
